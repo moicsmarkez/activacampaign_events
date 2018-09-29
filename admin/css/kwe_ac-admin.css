@@ -1,0 +1,391 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+@import url('https://fonts.googleapis.com/css?family=Mr+Dafoe');
+@import url('https://fonts.googleapis.com/css?family=Acme');
+
+
+
+
+div#wpwrap {
+    background-image: url("../../shared/img/_fondo.png") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #fff;
+    background-repeat: no-repeat;
+}
+
+#form_kwe_ac > div.config_api{
+    width: 49%;
+    display: inline-block;
+}
+
+#form_kwe_ac > div.probar_api{
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+form#form_kwe_ac table {
+    transition: all 0.5s;
+}
+form#form_kwe_ac input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+div.caja-op, div.caja-op-evnt{
+    position: relative;
+}
+
+form#form_kwe_ac h3{
+    font-size: 1.8em !important;
+}
+form#form_kwe_ac label{
+    font-size: 1.18em !important;
+}
+form#form_kwe_ac h3, form#form_kwe_ac label{
+    font-family: 'Acme', cursive !important;
+    font-weight: 300 !important;
+    text-shadow: 0 -1px 0px #bbbbbb85, 0 -3px 3px rgba(160, 160, 160, 0.31), 0 3px 4px rgba(202, 202, 202, 0.18);
+}
+
+div.caja-op input[type="text"]:disabled{
+    background: rgb(93, 143, 160);
+    border-color: rgba(222,222,222,.75);
+    box-shadow: inset 0 1px 1px rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+div.caja-op .button-cancel{
+    background: #a70303 !important;
+    color: #fff !important;
+    margin-left: 5px !important;
+}
+
+div.caja-op-evnt .lds-ripple{
+    margin-top: 15%;
+}
+
+div.caja-op-evnt{
+    width: 40%;
+    display: inline-block;  
+}
+
+div.caja-op-evnt div.overlay {
+    width: 90% !important;
+}
+
+.tabla-kwe-ac-events {
+    vertical-align: top;
+    position: relative;
+    width: 53%;
+    display: inline-block;
+    margin-top: -5% !important;
+}
+
+.tabla-kwe-ac-events table, .divTableBody{
+    text-align: center;
+    width: 100%;
+    /*border: 2px solid #009cbf;*/
+    border-radius: 5px !important;
+    box-shadow: 0px 25px 30px -20px #a9a9a9;
+    border-collapse: collapse;
+}
+
+.tabla-kwe-ac-events table > thead tr > th, .divTableBody .divTableRow:nth-child(1) {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    background-color: #3290b5;
+    color: white;
+}
+
+.tabla-kwe-ac-events table > thead tr > th, .tabla-kwe-ac-events table > tbody tr > td, .divTableCell, .divTableHead  {
+    border: 1px solid #dedede78 !important;
+    padding: 5px !important;
+}
+
+.tabla-kwe-ac-events .divTableHead{
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.tabla-kwe-ac-events table > tbody tr:nth-child(odd), .divTableRow:nth-child(even) {
+    background: #fff;
+}
+.tabla-kwe-ac-events table > tbody tr:nth-child(even), .divTableRow:nth-child(odd){
+    background: #eee;
+}
+
+.lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+.lds-ripple div {
+    position: absolute;
+    border: 4px solid #00d5ff;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+    0% {
+        top: 28px;
+        left: 28px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        top: -1px;
+        left: -1px;
+        width: 58px;
+        height: 58px;
+        opacity: 0;
+    }
+}
+
+
+
+div.overlay {
+    border-radius: 5px;
+    background: #00000080;
+    height: 95.2%;
+    width: 99%;
+    padding: 9px;
+    position: absolute;
+    z-index: 9999999;
+    text-align: center;
+    display: block;
+    cursor: wait;
+}
+
+.selectr-container.selectr-desktop.has-selected, .selectr-container.selectr-desktop.multiple {
+    width: 70%;
+}
+
+
+div#id_or_class_specific label {
+    padding: 10px;
+}
+
+div#id_or_class_specific {
+    padding: 10px 0px;
+    width: 70%;
+}
+
+.tabla-kwe-ac-events > .overlay {
+    width: 97% !important;
+    height: 97% !important;
+}
+
+/**/
+
+.plugin_kwe_ac_title{
+    font-family: Mr Dafoe, sans-serif;
+    font-size: 4em;
+    font-weight: 400;
+    text-shadow: 0 -1px 0px #bbbbbb, 0 -3px 0px rgba(171, 171, 171, 0.31), 0 -2px 11px rgba(93, 93, 93, 0.22), 0 6px 4px rgba(0,0,0,.18), 0 -3px 0px rgba(0,0,0,.21);
+
+}
+
+.plugin_kwe_ac_title_footer{
+    font-family: Mr Dafoe, sans-serif;
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+.divTable{
+    display: table;
+    width: 100%;
+}
+.divTableRow {
+    display: table-row;
+}
+.divTableHeading {
+    background-color: #EEE;
+    display: table-header-group;
+}
+.divTableCell, .divTableHead {
+    border: 1px solid #999999;
+    display: table-cell;
+    padding: 3px 10px;
+}
+.divTableHeading {
+    background-color: #EEE;
+    display: table-header-group;
+    font-weight: bold;
+}
+.divTableFoot {
+    background-color: #EEE;
+    display: table-footer-group;
+    font-weight: bold;
+}
+.divTableBody {
+    display: table-row-group;
+}
+
+.button.eliminar_evnt_kwe_ac {
+    color: #fff;
+    border-color: #000;
+    background: #b53232;
+    box-shadow: 2px 2px 5px #737373;
+}
+
+.button.eliminar_evnt_kwe_ac > i {
+    font-size: 20px;
+}
+
+.con_error{
+    box-shadow: inset 0px 0px 15px #b10000 !important;
+}
+
+.caja-op p {
+    width: 70%;
+}
+
+form#form_kwe_ac .caja-op-evnt input[type="text"] {
+    width: 70% !important;
+}
+
+
+/* *************Progress boton**************** */
+/* Button container */
+.progress-button {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    width: 45%;
+    min-width: 250px;
+    margin: 19.5% 24.5%;
+}
+
+/* Button style */
+.progress-button button {
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    width: 250px;
+    height: 70px;
+    border: 2px solid #50919e;
+    border-radius: 40px;
+    background: transparent;
+    color: #50919e;
+    letter-spacing: 1px;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
+    transition: background-color 0.3s, color 0.3s, width 0.3s, border-width 0.3s, border-color 0.3s;
+}
+
+.progress-button button:hover {
+    background-color: #50919e;
+    color: #fff;
+}
+
+.progress-button button:focus {
+    outline: none;
+}
+
+/* Text (transition for when returning to initial state) */
+.progress-button button span {
+    -webkit-transition: opacity 0.3s 0.1s;
+    transition: opacity 0.3s 0.1s;
+    font-size: 22px;
+    letter-spacing: -1px;
+    font-family: 'Acme', cursive !important;
+}
+
+/* Common style of SVGs */
+.progress-button svg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.progress-button svg path {
+    opacity: 0;
+    fill: none;
+}
+
+.progress-button svg.progress-circle path {
+    stroke: #50919e;
+    stroke-width: 5;
+}
+
+.progress-button svg.checkmark path,
+.progress-button svg.cross path {
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-width: 4;
+    -webkit-transition: opacity 0.1s;
+    transition: opacity 0.1s;
+}
+
+/* Loading, success and error effects */
+.loading.progress-button button {
+    width: 70px; /* make a circle */
+    border-width: 5px;
+    border-color: #ddd;
+    background-color: transparent;
+    color: #fff;
+}
+
+.loading.progress-button span {
+    -webkit-transition: opacity 0.15s;
+    transition: opacity 0.15s;
+}
+
+.loading.progress-button span,
+.success.progress-button span,
+.error-Uibtn.progress-button span {
+    opacity: 0; /* keep it hidden in all states */
+}
+
+.success.progress-button button,
+.error-Uibtn.progress-button button {
+    -webkit-transition: background-color 0.3s, width 0.3s, border-width 0.3s;
+    transition: background-color 0.3s, width 0.3s, border-width 0.3s;
+}
+
+.success.progress-button button {
+    border-color: #1ECD97;
+    background-color: #1ECD97;
+}
+
+.error-Uibtn.progress-button button {
+    border-color: #FB797E;
+    background-color: #FB797E;
+}
+
+.loading.progress-button svg.progress-circle path,
+.success.progress-button svg.checkmark path,
+.error-Uibtn.progress-button svg.cross path {
+    opacity: 1;
+    -webkit-transition: stroke-dashoffset 0.3s;
+    transition: stroke-dashoffset 0.3s;
+}
+
+/* Optional elastic effect for the width of the button */
+.elastic.progress-button button {
+    -webkit-transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.25, 0.25, 0.4, 1), border-width 0.3s, border-color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.25, 0.25, 0.4, 1.6), border-width 0.3s, border-color 0.3s;
+    transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.25, 0.25, 0.4, 1.6), border-width 0.3s, border-color 0.3s;
+}
+
+.loading.elastic.progress-button button {
+    -webkit-transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.6, 0, 0.75, 0.75), border-width 0.3s, border-color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.6, -0.6, 0.75, 0.75), border-width 0.3s, border-color 0.3s;
+    transition: background-color 0.3s, color 0.3s, width 0.3s cubic-bezier(0.6, -0.6, 0.75, 0.75), border-width 0.3s, border-color 0.3s;
+}
