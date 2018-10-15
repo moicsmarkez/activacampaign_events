@@ -16,7 +16,7 @@
  * Plugin Name:       KeiwebCo AC
  * Plugin URI:        keiwebco.com
  * Description:       Plugin de sincronia para anunciar eventos de seguimientos de usuarios con active campaign. VERSION BETA
- * Version:           1.1.15
+ * Version:           1.1.18
  * Author:            moicsmarkez
  * Author URI:        facebook.com/moicsmarkez
  * License:           GPL-2.0+
@@ -26,7 +26,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if ( ! defined( 'WPINC' ) ) { 
 	die;
 }
 
@@ -34,12 +34,12 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
- */
-define( 'KWE_AC_VERSION', '1.1.15' );
+ */  
+define( 'KWE_AC_VERSION', '2.2.48' );
 
-/**
+/** 
  * The code that runs during plugin activation.
- * This action is documented in includes/class-kwe_ac-activator.php
+ * This action is documented in includes/class-kwe_ac-activator.php 
  */
 function activate_kwe_ac() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-kwe_ac-activator.php';

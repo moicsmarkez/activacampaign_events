@@ -191,12 +191,13 @@ class Kwe_ac {
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'menu_admin');
-        $this->loader->add_action( 'wp_ajax_saved_api_settings', $plugin_admin ,'guardar_opciones_api');	
+        $this->loader->add_action( 'wp_ajax_saved_api_settings_and_events', $plugin_admin ,'guardar_opciones_api_and_events');	
         $this->loader->add_action( 'wp_ajax_remove_envt_kwe_ac', $plugin_admin ,'eliminar_evento');	
+        $this->loader->add_action( 'wp_ajax_remove_video_kwe_ac', $plugin_admin ,'eliminar_video');	
         $this->loader->add_action( 'init', $plugin_admin, 'capturar_hash');
 
         $this->loader->add_action( 'admin_head',$plugin_admin, 'kwe_ac_shortcode_button' );
-        $this->loader->add_action( 'wp_ajax_ac_check', $plugin_admin, 'ac_check' );
+        $this->loader->add_action( 'wp_ajax_ac_check', $plugin_admin, 'ac_check' ); 
     }
 
     
@@ -216,6 +217,8 @@ class Kwe_ac {
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
         $this->loader->add_action( 'wp_ajax_nopriv_ac_event', $plugin_public, 'ac_event' );
         $this->loader->add_action( 'wp_ajax_ac_event', $plugin_public, 'ac_event' );
+        $this->loader->add_action( 'wp_ajax_nopriv_ac_videos_tag', $plugin_public, 'ac_add_tag' );
+        $this->loader->add_action( 'wp_ajax_ac_videos_tag', $plugin_public, 'ac_add_tag' );
         
         add_shortcode( 'AC_%FULLNAME%', array( $plugin_public,'kwe_ac_shortc_fullname') );	
         add_shortcode( 'AC_%EMAIL%', array( $plugin_public,'kwe_ac_shortc_email') );	

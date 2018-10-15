@@ -70,9 +70,10 @@ class Kwe_ac_Admin {
          * between the defined hooks and the functions defined in this
          * class. 
          */
-        if ((isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events') || (isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events_settings')) {
+        if ((isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events') || (isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events_settings') || (isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_video')) {
             wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/kwe_ac-admin.css', array(), $this->version, 'all');
-            wp_enqueue_style('jquery_confim', plugin_dir_url(__FILE__) . 'css/jquery-confirm.min.css', array(), $this->version, 'all');
+            //wp_enqueue_style('jquery_confim', plugin_dir_url(__FILE__) . 'css/jquery-confirm.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('izitoast', plugin_dir_url(__FILE__) . 'css/iziToast.min.css', array(), $this->version, 'all');
             wp_enqueue_style('selector-kwe-ac', plugin_dir_url(__FILE__) . 'css/selectr.min.css', array(), $this->version, 'all');
             wp_enqueue_style('fontawesome-kwe-ac', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all');
         }
@@ -98,9 +99,10 @@ class Kwe_ac_Admin {
          * between the defined hooks and the functions defined in this
          * class.
          */
-        if ((isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events') || (isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events_settings')) {
+        if ((isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events') || (isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_events_settings') || (isset($_GET['page']) && $_GET['page'] == 'active_campaign_tracking_video')) {
             wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/kwe_ac-admin.js', array('jquery'), $this->version, false);
-            wp_enqueue_script('jquery_confirm_' . $this->plugin_name, plugin_dir_url(__FILE__) . 'js/jquery-confirm.min.js', array('jquery'), $this->version, false);
+            //wp_enqueue_script('jquery_confirm_' . $this->plugin_name, plugin_dir_url(__FILE__) . 'js/jquery-confirm.min.js', array('jquery'), $this->version, false);
+            wp_enqueue_script('izitoast_s_' . $this->plugin_name, plugin_dir_url(__FILE__) . 'js/iziToast.min.js', array(), $this->version, false);
             wp_enqueue_script('slector-kwe-ac' . $this->plugin_name, plugin_dir_url(__FILE__) . 'js/selectr.min.js', array('jquery'), $this->version, false);
             wp_enqueue_script('modenizr-custom' . $this->plugin_name, plugin_dir_url(__FILE__) . 'js/modernizr.custom.js', array(), $this->version, null, false);
             wp_enqueue_script('classie' . $this->plugin_name, plugin_dir_url(__FILE__) . 'js/classie.js', array(), $this->version, null, true);
@@ -109,9 +111,15 @@ class Kwe_ac_Admin {
     }
 
     public function menu_admin() {
-        add_menu_page('Active Campaign Tracking Events', 'AC Tracking Events', 'manage_options', 'active_campaign_tracking_events_settings', array($this, 'pagina_opciones_eventos'), 'dashicons-groups', 10);
-        add_submenu_page('active_campaign_tracking_events_settings', 'Active Campaign Tracking Events', 'Configuración', 'manage_options', 'active_campaign_tracking_events', array($this, 'pagina_opciones'));
+        add_menu_page('Active Campaign Tracking Events', 'AC Tracker', 'manage_options', 'active_campaign_tracking_events_settings', array($this, 'pagina_opciones_eventos'), 'dashicons-groups', 10);
+        add_submenu_page('active_campaign_tracking_events_settings', 'Active Campaign Tracking Events', 'AC Tracker Events', 'manage_options', 'active_campaign_tracking_events_settings', array($this, 'pagina_opciones_eventos'));
+        add_submenu_page('active_campaign_tracking_events_settings', 'Active Campaign Tracking Video', 'AC Tracker Video', 'manage_options', 'active_campaign_tracking_video', array($this, 'pagina_video_tracking'));
+        add_submenu_page('active_campaign_tracking_events_settings', 'Active Campaign Tracking Configuración', 'Configuración', 'manage_options', 'active_campaign_tracking_events', array($this, 'pagina_opciones'));
         //add_submenu_page('active_campaign_tracking_events', 'Active Campaign Tracking Events', 'Configuración Api', 'manage_options', 'active_campaign_tracking_events', array($this, 'pagina_opciones'));
+    }
+
+    public function pagina_video_tracking() {
+        include_once( plugin_dir_path(__FILE__) . 'partials/kwe_ac-admin-video-tacking.php' );
     }
 
     public function pagina_opciones() {
@@ -122,12 +130,11 @@ class Kwe_ac_Admin {
         include_once( plugin_dir_path(__FILE__) . 'partials/kwe_ac-admin-event-display.php' );
     }
 
-    public function guardar_opciones_api() {
+    public function guardar_opciones_api_and_events() {
         if (!isset($_POST['kwe_ac_key_reg']) || !wp_verify_nonce($_POST['kwe_ac_key_reg'], '8a35d1c099d6dd9f42e07afedb148294')) {
             wp_send_json_error('Procedimiento invalido, por favor refresca la pagina! -1');
             die(-1);
         }
-
 
         if (isset($_POST['kwe_ac_url_api']) && ($_POST['kwe_ac_url_api'] != '' || !empty($_POST['kwe_ac_url_api']))) {
             update_option('kwe_ac_url_api', $_POST['kwe_ac_url_api'], false);
@@ -175,30 +182,30 @@ class Kwe_ac_Admin {
 
             $opciont_reg_evento = get_option('eventos_registrados_kwe_ac', array());
             $flaG_tmp = false;
-            if ($opciont_reg_evento && count($opciont_reg_evento)) {
-                $reg_evento = [
-                    'index_id' => 'kwe_ac_' . rand(0, 1000) . '_' . mb_strtolower(str_replace(' ', '_', $_POST['kwe_ac_nmb_event']), 'UTF-8'),
-                    'nombre' => $_POST['kwe_ac_nmb_event'],
-                    'activador' => $_POST['kwe_ac_activador_event'],
-                    'id' => $_POST['_specific_id_kwe_ac'],
-                    'clase' => $_POST['_specific_class_kwe_ac'],
-                    'pagina' => in_array('all', $_POST['kwe_ac_pagina_event']) ? array('all') : $_POST['kwe_ac_pagina_event'],
-                ];
+
+            if (function_exists('mb_strtolower')) {
+                $index_id = 'kwe_ac_' . rand(0, 1000) . '_' . mb_strtolower(str_replace(' ', '_', $_POST['kwe_ac_nmb_event']), 'UTF-8');
+            } else {
+                $index_id = 'kwe_ac_' . rand(0, 1000) . '_' . str_replace(' ', '_', $_POST['kwe_ac_nmb_event']);
+            }
+            $reg_evento = [
+                'index_id' => $index_id,
+                'nombre' => $_POST['kwe_ac_nmb_event'],
+                'activador' => $_POST['kwe_ac_activador_event'],
+                'id' => $_POST['_specific_id_kwe_ac'],
+                'clase' => $_POST['_specific_class_kwe_ac'],
+                'pagina' => in_array('all', $_POST['kwe_ac_pagina_event']) ? array('all') : $_POST['kwe_ac_pagina_event'],
+            ];
+
+            if ($opciont_reg_evento != null && count($opciont_reg_evento)) {
                 array_push($opciont_reg_evento, $reg_evento);
                 update_option('eventos_registrados_kwe_ac', $opciont_reg_evento, false);
                 $flaG_tmp = true;
             } else {
-                $reg_evento[] = [
-                    'index_id' => 'kwe_ac_' . rand(0, 1000) . '_' . mb_strtolower(str_replace(' ', '_', $_POST['kwe_ac_nmb_event']), 'UTF-8'),
-                    'nombre' => $_POST['kwe_ac_nmb_event'],
-                    'activador' => $_POST['kwe_ac_activador_event'],
-                    'id' => $_POST['_specific_id_kwe_ac'],
-                    'clase' => $_POST['_specific_class_kwe_ac'],
-                    'pagina' => in_array('all', $_POST['kwe_ac_pagina_event']) ? array('all') : $_POST['kwe_ac_pagina_event'],
-                ];
-                update_option('eventos_registrados_kwe_ac', $reg_evento, false);
+                $_reg_evento[] = $reg_evento;
+                update_option('eventos_registrados_kwe_ac', $_reg_evento, false);
+                unset($_reg_evento);
                 $flaG_tmp = true;
-                $reg_evento = $reg_evento[0];
             }
 
             if ($flaG_tmp) {
@@ -235,7 +242,90 @@ class Kwe_ac_Admin {
                             echo intval($pagina) ? '<a href="' . get_page_link($pagina) . '" target="_blank">' . get_the_title($pagina) . '</a><br>' : 'Todas las paginas<br>';
                         }
                         ?></div>
-                    <div class="divTableCell"><div class="button eliminar_evnt_kwe_ac" data-element-id="<?php echo $reg_evento['index_id']; ?>"><i class="fa fa-trash"></i></div></div>
+                    <div class="divTableCell">
+                        <div class="button eliminar_evnt_kwe_ac" data-element-id="<?php echo $reg_evento['index_id']; ?>">
+                            <i class="fa fa-trash"></i>
+                            <div class="target-<?php echo $reg_evento['index_id']; ?> ">
+                                <span><b>Seguro?</b></span>
+                                <br>
+                                <span class="confirm-yes"> SI </span><span class="confirm-no"> NO </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <?php
+                wp_send_json_success(ob_get_clean());
+                wp_die();
+            }
+        }
+
+        if (isset($_POST['_option_evenst_video_display']) && ( $_POST['_option_evenst_video_display'] != '' || !empty($_POST['_option_evenst_video_display']) )) {
+            $reg_evento_video = array();
+
+
+            if (!isset($_POST['kwe_ac_nmb_video']) && !($_POST['kwe_ac_nmb_video'] != '' || !empty($_POST['kwe_ac_nmb_video']))) {
+                wp_send_json_error('Procedimiento invalido, por favor refresca la pagina! -3');
+                die(-1);
+            }
+            if (!isset($_POST['kwe_ac_id_video']) && !($_POST['kwe_ac_id_video'] != '' || !empty($_POST['kwe_ac_id_video']))) {
+                wp_send_json_error('Procedimiento invalido, por favor refresca la pagina! -3');
+                die(-1);
+            }
+            if (!isset($_POST['kwe_ac_tag_video']) && !($_POST['kwe_ac_tag_video'] != '' || !empty($_POST['kwe_ac_tag_video']))) {
+                wp_send_json_error('Procedimiento invalido, por favor refresca la pagina! -3');
+                die(-1);
+            }
+            if (!isset($_POST['kwe_ac_percent_video']) && !($_POST['kwe_ac_percent_video'] != '' || !empty($_POST['kwe_ac_percent_video']))) {
+                wp_send_json_error('Procedimiento invalido, por favor refresca la pagina! -3');
+                die(-1);
+            }
+
+            $opciont_reg_evento_video = get_option('videos_registrados_kwe_ac', array());
+            $flaG_tmp = false;
+            if (function_exists('mb_strtolower')) {
+                $index_id = 'kwe_ac_' . rand(0, 1000) . '_' . mb_strtolower(str_replace(' ', '_', $_POST['kwe_ac_id_video']), 'UTF-8');
+            } else {
+                $index_id = 'kwe_ac_' . rand(0, 1000) . '_' . str_replace(' ', '_', $_POST['kwe_ac_id_video']);
+            }
+            $reg_video = [
+                'index_id' => $index_id,
+                'vid_id' => $_POST['kwe_ac_id_video'],
+                'vid_T' => $_POST['kwe_ac_nmb_video'],
+                'vid_E' => $_POST['kwe_ac_tag_video'],
+                'vid_P' => $_POST['kwe_ac_percent_video'],
+                'vid_A' => isset($_POST['smaller_than']) && $_POST['smaller_than'] == 'on' ? 'on' : '',
+            ];
+            if ($opciont_reg_evento_video != null && count($opciont_reg_evento_video)) {
+                array_push($opciont_reg_evento_video, $reg_video);
+                update_option('videos_registrados_kwe_ac', $opciont_reg_evento_video, false);
+                $flaG_tmp = true;
+            } else {
+                $_reg_video[] = $reg_video;
+                update_option('videos_registrados_kwe_ac', $_reg_video, false);
+                unset($_reg_video);
+                $flaG_tmp = true;
+            }
+
+            if ($flaG_tmp) {
+                ob_start();
+                ?>
+                <div class="divTableRow" style="display: none;">
+                    <div class="divTableCell"><?php echo $reg_video['vid_id']; ?></div>
+                    <div class="divTableCell"><?php echo $reg_video['vid_T']; ?></div>
+                    <div class="divTableCell"><?php echo /*isset($reg_video['vid_A']) && $reg_video['vid_A'] == on ? '(Menos de) '.$reg_video['vid_P'].'%' : '(Mas de) '.*/$reg_video['vid_P'].'%'; ?></div>
+                    <div class="divTableCell"><?php echo $reg_video['vid_E']; ?></div>
+                    <div class="divTableCell">
+                        <div class="button eliminar_evnt_kwe_ac" data-element-id="<?php echo $reg_video['index_id']; ?>">
+                            <i class="fa fa-trash"></i>
+                            <div class="target-<?php echo $reg_video['index_id']; ?> ">
+                                <span><b>Seguro?</b></span>
+                                <br>
+                                <span class="confirm-yes"> SI </span><span class="confirm-no"> NO </span>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <?php
                 wp_send_json_success(ob_get_clean());
@@ -256,7 +346,26 @@ class Kwe_ac_Admin {
                 if ($opcion_valor['index_id'] === $_POST['id_evnt']) {
                     unset($opciont_reg_evento[$opcion_key]);
                     update_option('eventos_registrados_kwe_ac', $opciont_reg_evento, false);
-                    wp_send_json_success(ob_get_clean());
+                    wp_send_json_success('exito');
+                    wp_die();
+                }
+            }
+        }
+
+        wp_send_json_error('Procedimiento invalido, por favor refresca la pagina! -2');
+        die(-1);
+    }
+
+    public function eliminar_video() {
+
+        $opciont_reg_evento_video = get_option('videos_registrados_kwe_ac', array());
+
+        if (isset($_POST['id_video']) && $_POST['id_video'] != '') {
+            foreach ($opciont_reg_evento_video as $opcion_key => $opcion_valor) {
+                if ($opcion_valor['index_id'] === $_POST['id_video']) {
+                    unset($opciont_reg_evento_video[$opcion_key]);
+                    update_option('videos_registrados_kwe_ac', $opciont_reg_evento_video, false);
+                    wp_send_json_success('exito');
                     wp_die();
                 }
             }
@@ -269,7 +378,7 @@ class Kwe_ac_Admin {
     public function capturar_hash() {
         if (isset($_GET['contact_hash']) && $_GET['contact_hash'] != '') {
             $this->cargar_dependencias();
-            // load ac
+            // load ac 
             $ac = new ActiveCampaignAPI(ACTIVECAMPAIGN_URL, ACTIVECAMPAIGN_API_KEY);
 
             if (!(int) $ac->credentials_test()) {
@@ -280,10 +389,13 @@ class Kwe_ac_Admin {
             $hash_response = $ac->api("contact/view?hash=" . $_GET['contact_hash']);  //this is where we get the email from the hash
             if ($hash_response) {
                 //CREAR COOKIES
-                setcookie("_contact_hash", $_GET['contact_hash'], 60 * 60 * 24 * 30 + time(), "/", $_SERVER['HTTP_HOST']);
+                if ($_COOKIE['_contact_hash'] != $_GET['contact_hash']) {
+                    setcookie("_contact_hash", $_GET['contact_hash'], 60 * 60 * 24 * 30 + time(), "/", $_SERVER['HTTP_HOST']);
+                    header('Location: ' . '//' . $_SERVER['HTTP_HOST'] . explode('?', $_SERVER['REQUEST_URI'], 2)[0]);
+                    die();
+                }
             }
         }
-        
     }
 
     private function cargar_dependencias() {
@@ -309,27 +421,27 @@ class Kwe_ac_Admin {
         wp_send_json_success();
         die(-1);
     }
-    
-    public function kwe_ac_shortcode_button(){
+
+    public function kwe_ac_shortcode_button() {
         global $typenow;
-        if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-            if( in_array( $typenow, array( 'post', 'page' ) ) ) {
-                if ( get_user_option( 'rich_editing' ) == 'true') {
-                    add_filter( 'mce_external_plugins', array($this,'popups_add_tinymce_plugin') );
-                    add_filter( 'mce_buttons', array($this,'popups_register_button') );
+        if (current_user_can('edit_posts') && current_user_can('edit_pages')) {
+            if (in_array($typenow, array('post', 'page'))) {
+                if (get_user_option('rich_editing') == 'true') {
+                    add_filter('mce_external_plugins', array($this, 'popups_add_tinymce_plugin'));
+                    add_filter('mce_buttons', array($this, 'popups_register_button'));
                 }
             }
         }
     }
-    
-    public function popups_add_tinymce_plugin($plugin_array){
+
+    public function popups_add_tinymce_plugin($plugin_array) {
         $plugin_array['popups_kwe_ac_button'] = plugin_dir_url(__FILE__) . 'js/popup_kwe_ac_sc.js';
-    	return $plugin_array;
+        return $plugin_array;
     }
-    
-    public function popups_register_button($buttons){
-       array_push($buttons, 'popups_kwe_ac_button');
-       return $buttons;
+
+    public function popups_register_button($buttons) {
+        array_push($buttons, 'popups_kwe_ac_button');
+        return $buttons;
     }
 
 }
